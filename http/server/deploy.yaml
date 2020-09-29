@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: http-server-deployment
+  labels:
+    app: http-server
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: http-server
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  minReadySeconds: 5
+  template:
+    metadata:
+      labels:
+        app: http-server
+    spec:
+      containers:
+      - name: http-server
+        image: syhlion/ithome30day-http-server
+        ports:
+        - containerPort: 8080
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: http-server
+spec:
+  type: ClusterIP
+  selector:
+    app: http-server
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: 8080

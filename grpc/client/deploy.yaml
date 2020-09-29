@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grpc-client-deployment
+  labels:
+    app: grpc-client
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: grpc-client
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  minReadySeconds: 5
+  template:
+    metadata:
+      labels:
+        app: grpc-client
+    spec:
+      containers:
+      - name: grpc-client
+      #如果上面沒有自己嘗試，這邊可以用我已經上傳好的 smaple image 直接使用
+        image: syhlion/ithome30day-grpc-client
+        env:
+          ADDRESS: "grpc-server:8080"
+        ports:
+        - containerPort: 8080
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: grpc-client
+spec:
+  type: ClusterIP
+  selector:
+    app: grpc-client
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: 8080

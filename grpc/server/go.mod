@@ -1,4 +1,4 @@
-module github.com/syhlion/2020-12th-ithome30day-istio-loadbalance/grpc/client
+module github.com/syhlion/2020-12th-ithome30day-istio-loadbalance/grpc/server
 
 go 1.14
 

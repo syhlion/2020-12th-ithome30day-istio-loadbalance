@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: grpc-server-deployment
+  labels:
+    app: grpc-server
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: grpc-server
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  minReadySeconds: 5
+  template:
+    metadata:
+      labels:
+        app: grpc-server
+    spec:
+      containers:
+      - name: grpc-server
+        image: syhlion/ithome30day-grpc-server
+        ports:
+        - containerPort: 8080
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: grpc-server
+spec:
+  type: ClusterIP
+  selector:
+    app: grpc-server
+  ports:
+  - protocol: TCP
+    port: 8080
+    targetPort: 8080
