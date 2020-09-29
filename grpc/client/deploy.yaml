@@ -22,10 +22,10 @@ spec:
     spec:
       containers:
       - name: grpc-client
-      #如果上面沒有自己嘗試，這邊可以用我已經上傳好的 smaple image 直接使用
         image: syhlion/ithome30day-grpc-client
         env:
-          ADDRESS: "grpc-server:8080"
+        - name: "ADDRESS"
+          value: "grpc-server:8080"
         ports:
         - containerPort: 8080
 ---
